@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 // src/App.jsx
 import './App.css'
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -18,7 +19,6 @@ function App() {
     <Router>
       <div className='App'>
         <Navbar />
-        <h1>Loteria camilo acevedo </h1>
         <AboutMe/>
         <SocialMedia />
         {/* <Element name="inicio">
@@ -36,9 +36,10 @@ function App() {
         <Footer />
         <SpeedInsights />
         <Analytics />
-        
       </div>
+      
     </Router>
+    
   )
 }
 
