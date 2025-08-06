@@ -18,6 +18,7 @@ function App() {
     <Router>
       <div className='App'>
         <Navbar />
+        <h1>Loteria camilo acevedo </h1>
         <AboutMe/>
         <SocialMedia />
         {/* <Element name="inicio">
