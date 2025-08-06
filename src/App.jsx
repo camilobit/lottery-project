@@ -20,7 +20,7 @@ function App() {
         <Navbar />
         <AboutMe/>
         <SocialMedia />
-        <Element name="inicio">
+        {/* <Element name="inicio">
           <Inicio />
         </Element>
         <Element name="skills">
@@ -28,7 +28,7 @@ function App() {
         </Element>
         <Element name="projects">
           <Projects />
-        </Element>
+        </Element> */}
         <Element name="contact">
           {/* <Contact /> */}
         </Element>
