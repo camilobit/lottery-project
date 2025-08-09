@@ -13,6 +13,7 @@ import Inicio from './components/Inicio/Inicio';
 import Skills from './components/Proyectos/Skills';
 import SocialMedia from './components/SocialMedia/SocialMedia';
 import Footer from './components/Footer/Footer';
+import NumerosRifa from './components/NumerosRifa/NumerosRifa';
 
 function App() {
   return (
@@ -21,15 +22,18 @@ function App() {
         <Navbar />
         <AboutMe/>
         <SocialMedia />
-        {/* <Element name="inicio">
+        <Element name="inicio">
           <Inicio />
+        </Element>
+        <Element name="rifa">
+          <NumerosRifa />
         </Element>
         <Element name="skills">
           <Skills />
         </Element>
         <Element name="projects">
           <Projects />
-        </Element> */}
+        </Element>
         <Element name="contact">
           {/* <Contact /> */}
         </Element>
@@ -37,7 +41,6 @@ function App() {
         <SpeedInsights />
         <Analytics />
       </div>
-      
     </Router>
     
   )

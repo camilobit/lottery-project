@@ -1,0 +1,38 @@
+.rifa-container {
+  padding: 10px;
+  max-width: 500px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.titulo {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.numeros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 5px;
+}
+
+.numero {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.numero:hover {
+  transform: scale(1.05);
+}
+
+.numero.vendido {
+  background-color: #ff4d4d;
+  color: white;
+}
