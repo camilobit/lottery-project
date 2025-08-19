@@ -6,7 +6,23 @@ export default function Rifa() {
     i.toString().padStart(3, "0")
   );
 
-  const vendidos = ["080", "100", "200", "300", "013", "010"];
+
+  const vendidos = ["000", "100", "200", "300", "400", "500", "600","700","800","900","999"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const [isOpen, setIsOpen] = useState(false);
   const [pagina, setPagina] = useState(0);
   const numerosPorPagina = 200; // 10x10 grid
