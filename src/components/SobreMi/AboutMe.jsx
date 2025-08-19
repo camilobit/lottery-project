@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { FaLinkedin, FaGithub, FaWhatsapp } from 'react-icons/fa'
-import camiloFoto from '../../assets/perfilImage.jpeg'
 
 export default function AboutMe() {
   const [open, setOpen] = useState(true)
@@ -32,7 +31,7 @@ export default function AboutMe() {
                   >
                     <span className="absolute -inset-2.5" />
                     <span className="sr-only">Close panel</span>
-                    <XMarkIcon aria-hidden="true" className="h-6 w-6" />
+                    <XMarkIcon aria-hidden="true" className="h-9 w-9 font-bold p-1 bg-red-600 rounded-full text-white hover:bg-red-700" />
                   </button>
                 </div>
               </TransitionChild>
