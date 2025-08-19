@@ -37,6 +37,7 @@ export default function Rifa() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-6 max-w-3xl w-full relative">
             <h2 className="text-xl font-bold mb-4">Talonario de Números</h2>
+            <h3 className="text-xl mb-4">Aquí ves los números disponibles, una vez pagada la boleta marcaremos tu número en rojo</h3>
 
             {/* Parrilla */}
             <div className="grid grid-cols-8 gap-2 max-h-[400px] overflow-y-auto">
