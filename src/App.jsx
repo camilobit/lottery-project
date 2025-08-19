@@ -10,6 +10,7 @@ import AboutMe from './components/SobreMi/AboutMe';
 import Inicio from './components/Inicio/Inicio';
 import Footer from './components/Footer/Footer';
 import NumerosRifa from './components/NumerosRifa/NumerosRifa';
+import RifaInfo from './components/RifaInfo/RifaInfo';
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
         </Element>
         <Element name="rifa">
           <NumerosRifa />
+        </Element>
+        <Element>
+          <br></br>
+          <br></br>
+          <br></br>
+        </Element>
+        <Element name="RifaInfo">
+          <RifaInfo />
         </Element>
         <Footer />
         <SpeedInsights />

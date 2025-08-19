@@ -20,12 +20,17 @@ export default function Rifa() {
   return (
     <div className="text-center">
       {/* Botón para abrir modal */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-      >
-        Ver Números Disponibles
-      </button>
+     <button
+  onClick={() => setIsOpen(true)}
+  className="relative px-6 py-3 font-bold text-white rounded-full overflow-hidden group bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 shadow-lg hover:shadow-xl transition-transform transform hover:scale-105"
+>
+  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-yellow-400 via-pink-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+  <span className="relative flex items-center gap-2 text-lg tracking-wide">
+    🎟️ Ver Números Disponibles
+  </span>
+</button>
+
+
 
       {/* Modal */}
       {isOpen && (

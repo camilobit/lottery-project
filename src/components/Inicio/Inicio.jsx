@@ -24,7 +24,8 @@ export default function Inicio({ onAbrirModal }) {
         </h1>
         <p className="mt-6 text-lg leading-8 text-gray-200">
           Aquí podrás consultar los números disponibles, elegir tu favorito 
-          y participar en esta gran rifa.  
+          y participar. 
+          <br></br>¡Así de sencillo es entrar en la rifa.  
         </p>
 
         {/* Sección de instrucciones */}
@@ -40,7 +41,7 @@ export default function Inicio({ onAbrirModal }) {
               ✅ Realiza tu pago a través de <span className="font-semibold text-indigo-300">Nequi</span> con el número que quieras separar.
             </li>
             <li>
-              ✅ Envía el comprobante de pago al número{" "}
+              ✅ Envía el comprobante de pago, con tu nombre y número escogido al teléfono{" "}
               <span className="font-bold text-green-300">318 577 6314</span>.
             </li>
             <li>
