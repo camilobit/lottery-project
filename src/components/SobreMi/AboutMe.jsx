@@ -38,38 +38,53 @@ export default function AboutMe() {
               </TransitionChild>
               <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                 <div className="px-4 sm:px-6">
-                  <DialogTitle className="text-base font-semibold leading-6 text-gray-900">Camilo Acevedo</DialogTitle>
+                  <DialogTitle className="text-base font-semibold leading-6 text-gray-900">Gracias por Apoyar esta Rifa</DialogTitle>
                 </div>
                 <div className="relative mt-6 flex-1 px-4 sm:px-6 flex flex-col items-center">
                   {/* Imagen de perfil */}
-                  <img
-                    src={camiloFoto}
-                    alt="Camilo Acevedo"
-                    className="w-32 h-32 rounded-full border-4 border-gray-300 shadow-lg mb-6"
-                  />
+                  
                   {/* Texto de presentación */}
-                  <div className="text-center max-w-2xl">
-                    <p className="text-gray-900 text-lg mb-4">
-                    ¡Hola! Soy un desarrollador con dos años de experiencia en el mundo de la programación. Comencé con HTML y CSS, y rápidamente avancé hacia tecnologías como Node.js y React.js. Actualmente, me estoy enfocando en aprender y aplicar inteligencia artificial en mis proyectos personales, además de estar realizando una certificación como Full Stack Developer con IBM.
-                    </p>
-                    <p className="text-gray-900 text-lg mb-4">
-                    A lo largo de mi trayectoria, he tenido la oportunidad de desarrollar proyectos como emprendedor, creando soluciones específicas para distintos clientes. Aunque en el pasado he desempeñado roles en otras industrias, hoy he decidido dedicarme por completo a esta apasionante industria tecnológica.
-                    <br></br>
-                    Tengo 28 años, me encanta hacer ejercicio y cocinar, y una de mis próximas metas es mejorar mi nivel de inglés hasta alcanzar un nivel B2.
-                    </p>
-                  </div>
-                  {/* Iconos de redes sociales */}
-                  <div className="flex space-x-4 mt-6">
-                    <a href="https://www.linkedin.com/in/camilo-acevedo/" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-gray-900">
-                      <FaLinkedin size={30} />
-                    </a>
-                    <a href="https://github.com/camilobit" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-gray-900">
-                      <FaGithub size={30} />
-                    </a>
-                    <a href="https://wa.me/qr/LOCPNV72ZSSCG1" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-gray-900">
-                      <FaWhatsapp size={30} />
-                    </a>
-                  </div>
+                <div className="text-center max-w-2xl">
+                  <p className="text-gray-900 text-lg mb-4 font-semibold">
+                    ¡Bienvenido! 🙌  
+                  </p>
+                  <p className="text-gray-900 text-lg mb-4">
+                    Gracias por apoyar esta iniciativa. Tu aporte es muy valioso y hace posible que este proyecto siga adelante.  
+                  </p>
+                  <p className="text-gray-900 text-lg mb-4">
+                    Aquí podrás ver los números disponibles para participar en el sorteo y encontrarás las instrucciones para unirte fácilmente.  
+                  </p>
+                  <p className="text-gray-900 text-lg font-medium">
+                    ¡Mucha suerte y gracias por tu apoyo! 🍀
+                  </p>
+                </div>
+                {/* Iconos de redes sociales */}
+                <div className="flex space-x-4 mt-6 justify-center">
+                  <a 
+                    href="https://www.linkedin.com/in/camilo-acevedo/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-gray-700 hover:text-gray-900 transition"
+                  >
+                    <FaLinkedin size={30} />
+                  </a>
+                  <a 
+                    href="https://github.com/camilobit" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-gray-700 hover:text-gray-900 transition"
+                  >
+                    <FaGithub size={30} />
+                  </a>
+                  <a 
+                    href="https://wa.me/qr/LOCPNV72ZSSCG1" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-gray-700 hover:text-gray-900 transition"
+                  >
+                    <FaWhatsapp size={30} />
+                  </a>
+                </div>
                 </div>
               </div>
             </DialogPanel>

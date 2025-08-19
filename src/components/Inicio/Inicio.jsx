@@ -29,22 +29,8 @@ export default function Inicio() {
           </div>
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-[#ccd6f6] sm:text-6xl">
-              Hola! soy Camilo Acevedo, Full Stack Developer
+              Aquí, podrás ver los números que tenemos disponibles
             </h1>
-            <p className="mt-14 text-lg leading-8 text-white">
-            Me gradué como Full Stack Developer y poseo una gran pasión por aprender y desarrollar mis habilidades tanto técnicas como blandas. Espero que disfrutes este portafolio y podamos conocernos mejor.
-            </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href='https://www.nequi.com' target='_blank' rel="noreferrer"
-                className="rounded-md bg-[#ff80b5] px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sobre mi
-              </a>
-              <a href="https://drive.google.com/file/d/1wDv-MPHYC8Vt0CRwSVDrVRHfcQF0WmI9/view?usp=drive_link" className="text-sm font-semibold leading-6 text-[#ff80b5]" target='_blank' rel="noreferrer">
-              Mira mi CV <span aria-hidden="true">→</span>
-              </a>
-            </div>
           </div>
         </div>
         <div

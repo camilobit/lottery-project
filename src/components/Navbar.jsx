@@ -7,9 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const navigation = [
   { name: 'Inicio', href: 'inicio' },
-  { name: 'Habilidades', href: 'skills' },
-  { name: 'Proyectos', href: 'projects' },
-  { name: 'Contáctame', href: 'contact' },
+  { name: 'Talonario', href: 'talonario' }
 ];
 
 const Navbar = () => {
@@ -54,7 +52,7 @@ const Navbar = () => {
           <a href="/"
           className="text-sm font-semibold leading-6 text-white cursor-pointer"
           >
-            Sobre mi
+            Agradecimientos
           </a>
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -104,16 +102,8 @@ const Navbar = () => {
                 <a href="/"
           className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
           >
-            Sobre mi
+            Agradecimientos
           </a>
-              </div>
-              <div className="py-6">
-                <RouterLink
-                  to="https://drive.google.com/file/d/1wDv-MPHYC8Vt0CRwSVDrVRHfcQF0WmI9/view?usp=drive_link"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" target='_blank' rel="noreferrer"
-                >
-                  Mira mi CV
-                </RouterLink>
               </div>
             </div>
           </div>
