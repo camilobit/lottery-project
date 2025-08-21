@@ -7,7 +7,7 @@ export default function Rifa() {
   );
 
 
-  const vendidos = ["029","343","251","521"];
+  const vendidos = ["029","343","251","521","037"];
 
 
 
