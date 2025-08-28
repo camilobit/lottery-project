@@ -16,7 +16,7 @@ export default function RifaInfo() {
           <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
             <CalendarDays className="w-12 h-12 text-blue-600 mb-4" />
             <h3 className="text-xl font-semibold text-gray-800 mb-2">Fecha del sorteo</h3>
-            <p className="text-gray-600">Miércoles, 17 de septiembre de 2025</p>
+            <p className="text-gray-600">Miércoles, 1 de Octubre de 2025</p>
           </div>
 
           {/* Premio */}
