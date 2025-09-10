@@ -13,10 +13,22 @@ export default function Rifa() {
     "323","722","417","013","019","398","005","017","012","248","123",
     "237","012","078","045","251",
   // numeros papa
-  "000","967","348","961","555","666","600","500","046","031",
+  "000","967","348","961","555","666","600","500","046","032",
   // numero mama
   "261","782",
-  "026",];
+  "026"];
+
+
+
+ // ✅ Validación interna de números repetidos
+  const numerosRepetidos = vendidos.filter(
+    (item, index) => vendidos.indexOf(item) !== index
+  );
+
+  // Si quieres verlos en consola:
+  console.log("🔎 Números repetidos:", numerosRepetidos);
+
+
 
 
 
