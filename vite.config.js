@@ -10,6 +10,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'esbuild',
+    minify: 'esbuild', // esbuild viene integrado con Vite, no requiere instalar nada extra
   },
 })

@@ -15,14 +15,14 @@ export const RIFA_CONFIG = {
 
 // ========== CONFIGURACIÓN DE PREMIOS Y FECHAS ==========
 export const RIFA_DETAILS = {
-  NAME: '🎟️ Gran Rifa Universitaria',
-  DESCRIPTION: 'Gran rifa pro fondos Universitarios',            
+  NAME: '🎟️ Gran Rifa Solidaria',
+  DESCRIPTION: 'Ayúdame a culminar mis estudios universitarios',
   PRIZE_AMOUNT: 500000, // Valor en COP
   PRIZE_DESCRIPTION: '$500.000 COP en efectivo',
-  DRAW_DATE: '19 de Agosto de 2026',
-  DRAW_TIME: '14:00 (11:00 PM)',
+  DRAW_DATE: '19 de Agosto de 2025',
+  DRAW_TIME: '14:00 (2:00 PM)',
   LOTTERY_NAME: 'Lotería del Meta',
-  TICKET_PRICE: 20000, // Precio por número
+  TICKET_PRICE: 10000, // Precio por número
   CURRENCY: 'COP',
   CURRENCY_SYMBOL: '$',
 };
@@ -31,7 +31,7 @@ export const RIFA_DETAILS = {
 export const CONTACT_INFO = {
   PHONE: '3185776314',
   WHATSAPP: 'https://wa.me/573185776314',
-  EMAIL: 'camiloacevedovargas@email.com',
+  EMAIL: 'ejemplo@email.com',
   CITY: 'Villavicencio, Meta',
 };
 

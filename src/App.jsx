@@ -74,7 +74,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span className="text-3xl">🎟️</span>
-            <h1 className="text-xl font-bold text-primary-900">Gran Rifa Universitaria</h1>
+            <h1 className="text-xl font-bold text-primary-900">Gran Rifa Solidaria</h1>
           </div>
           <button
             onClick={() => setShowAdmin(true)}
@@ -196,7 +196,7 @@ function App() {
         <div className="max-w-4xl mx-auto text-center">
           <p className="mb-2">📱 Contacto: 3185776314</p>
           <p className="text-gray-400 text-sm">
-            © 2026 Gran Rifa Universitaria. Todos los derechos reservados.
+            © 2026 Gran Rifa Solidaria. Todos los derechos reservados.
           </p>
         </div>
       </footer>

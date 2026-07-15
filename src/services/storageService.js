@@ -1,27 +1,55 @@
 /**
  * Servicio de Almacenamiento
- * Gestiona persistencia de datos en:
- * - localStorage (frontend)
- * - Posteriormente: Backend/Base de datos
+ *
+ * IMPORTANTE: Los datos DE LA RIFA (números, compradores, comprobantes)
+ * viven en Firestore (nube, compartido entre todos los dispositivos).
+ * Antes vivían en localStorage, que es exclusivo de cada navegador — por
+ * eso un comprador y el admin, en dispositivos distintos, nunca se veían
+ * entre sí. Con Firestore, ambos leen y escriben la MISMA fuente de datos.
+ *
+ * Lo que sigue en localStorage (a propósito, porque tiene sentido que sea
+ * por-dispositivo): la sesión del admin, preferencias de UI y borradores
+ * de formularios en progreso.
  */
 
+import {
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+} from 'firebase/firestore';
+import { db, isFirebaseConfigured } from './firebaseConfig';
 import { STORAGE_KEYS, RIFA_CONFIG } from '../config/app.config';
 import RifaService from './rifaService';
 
+// Un único documento contiene todo el estado de la rifa.
+// Si en el futuro se quiere manejar varias rifas, esto se puede convertir
+// en una colección con un doc por rifa (ej: doc(db, 'rifas', rifaId)).
+// Si Firebase no está configurado (faltan variables de entorno), esta
+// referencia queda en null y cada método lo detecta antes de usarla,
+// mostrando un error claro en vez de una excepción sin controlar.
+const RIFA_DOC_REF = isFirebaseConfigured ? doc(db, 'rifa', 'main') : null;
+
+const FIREBASE_NOT_CONFIGURED_MSG =
+  'Firebase no está configurado. Completa las variables VITE_FIREBASE_* en tu archivo .env (ver .env.example) y en las variables de entorno de Vercel, luego vuelve a desplegar.';
+
 class StorageService {
   /**
-   * Inicializa el estado global de la rifa
-   * Si no existe, crea uno nuevo
-   * @returns {Object} Estado inicial de rifa
+   * Inicializa el estado global de la rifa en Firestore.
+   * Si no existe, crea uno nuevo con los 100 números disponibles.
+   * @returns {Promise<Object>} Estado inicial de rifa
    */
-  static initializeRifaData() {
-    const existingData = this.getRifaData();
+  static async initializeRifaData() {
+    if (!RIFA_DOC_REF) {
+      throw new Error(FIREBASE_NOT_CONFIGURED_MSG);
+    }
+
+    const existingData = await this.getRifaData();
 
     if (existingData && this.isValidRifaData(existingData)) {
       return existingData;
     }
 
-    // Crear datos iniciales
     const initialData = {
       version: '1.0',
       createdAt: new Date().toISOString(),
@@ -36,65 +64,100 @@ class StorageService {
       },
     };
 
-    this.setRifaData(initialData);
+    const saved = await this.setRifaData(initialData);
+    if (!saved) {
+      throw new Error(
+        'No se pudo inicializar la base de datos de la rifa. Verifica tu conexión a internet y la configuración de Firebase.'
+      );
+    }
+
     return initialData;
   }
 
   /**
-   * Obtiene todos los datos de rifa
-   * @returns {Object|null} Datos de rifa o null si no existe
+   * Obtiene todos los datos de rifa desde Firestore (lectura única)
+   * @returns {Promise<Object|null>} Datos de rifa o null si no existe
    */
-  static getRifaData() {
+  static async getRifaData() {
+    if (!RIFA_DOC_REF) {
+      console.error(FIREBASE_NOT_CONFIGURED_MSG);
+      return null;
+    }
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.RIFA_DATA);
-      return data ? JSON.parse(data) : null;
+      const snapshot = await getDoc(RIFA_DOC_REF);
+      return snapshot.exists() ? snapshot.data() : null;
     } catch (error) {
-      console.error('Error al leer datos de rifa:', error);
+      console.error('Error al leer datos de rifa (Firestore):', error);
       return null;
     }
   }
 
   /**
-   * Guarda datos de rifa
+   * Guarda datos de rifa en Firestore
    * @param {Object} data - Datos a guardar
-   * @returns {boolean} Éxito de la operación
+   * @returns {Promise<boolean>} Éxito de la operación
    */
-  static setRifaData(data) {
+  static async setRifaData(data) {
+    if (!RIFA_DOC_REF) {
+      console.error(FIREBASE_NOT_CONFIGURED_MSG);
+      return false;
+    }
     try {
       const dataToSave = {
         ...data,
         lastUpdated: new Date().toISOString(),
       };
-      localStorage.setItem(
-        STORAGE_KEYS.RIFA_DATA,
-        JSON.stringify(dataToSave)
-      );
+      await setDoc(RIFA_DOC_REF, dataToSave);
       return true;
     } catch (error) {
-      console.error('Error al guardar datos de rifa:', error);
+      console.error('Error al guardar datos de rifa (Firestore):', error);
       return false;
     }
   }
 
   /**
-   * Obtiene solo el array de números
-   * @returns {Array} Array de números
+   * Se suscribe a cambios en tiempo real del documento de la rifa.
+   * Así, si el admin aprueba una solicitud, el cliente lo ve reflejado
+   * sin recargar la página (y viceversa).
+   * @param {(data: Object) => void} callback - Se llama con los datos actualizados
+   * @returns {() => void} Función para cancelar la suscripción
    */
-  static getNumbers() {
-    const data = this.getRifaData();
+  static subscribeToRifaData(callback) {
+    if (!RIFA_DOC_REF) {
+      console.error(FIREBASE_NOT_CONFIGURED_MSG);
+      return () => {};
+    }
+    return onSnapshot(
+      RIFA_DOC_REF,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          callback(snapshot.data());
+        }
+      },
+      (error) => {
+        console.error('Error en la suscripción de rifa (Firestore):', error);
+      }
+    );
+  }
+
+  /**
+   * Obtiene solo el array de números
+   * @returns {Promise<Array>} Array de números
+   */
+  static async getNumbers() {
+    const data = await this.getRifaData();
     return data?.numbers || [];
   }
 
   /**
-   * Actualiza el array de números
+   * Actualiza el array de números en Firestore
    * @param {Array} numbers - Nuevo array de números
-   * @returns {boolean} Éxito de la operación
+   * @returns {Promise<boolean>} Éxito de la operación
    */
-  static setNumbers(numbers) {
-    const data = this.getRifaData() || this.initializeRifaData();
+  static async setNumbers(numbers) {
+    const data = (await this.getRifaData()) || (await this.initializeRifaData());
     data.numbers = numbers;
 
-    // Recalcular estadísticas
     const stats = RifaService.calculateStats(numbers);
     data.metadata = {
       totalNumbers: stats.total,
@@ -109,10 +172,10 @@ class StorageService {
    * Actualiza un número específico
    * @param {string} number - Número a actualizar
    * @param {Object} updates - Datos a actualizar
-   * @returns {boolean} Éxito de la operación
+   * @returns {Promise<boolean>} Éxito de la operación
    */
-  static updateNumber(number, updates) {
-    const numbers = this.getNumbers();
+  static async updateNumber(number, updates) {
+    const numbers = await this.getNumbers();
     const updatedNumbers = RifaService.updateNumber(numbers, number, updates);
 
     if (updatedNumbers.length === numbers.length) {
@@ -125,12 +188,18 @@ class StorageService {
   /**
    * Obtiene datos de un número específico
    * @param {string} number - Número a buscar
-   * @returns {Object|null} Datos del número
+   * @returns {Promise<Object|null>} Datos del número
    */
-  static getNumber(number) {
-    const numbers = this.getNumbers();
+  static async getNumber(number) {
+    const numbers = await this.getNumbers();
     return RifaService.getNumberData(numbers, number);
   }
+
+  // ============================================================
+  // Lo siguiente queda en localStorage a propósito: son datos
+  // que tiene sentido que sean específicos de cada dispositivo/
+  // navegador (sesión de admin, preferencias, borradores).
+  // ============================================================
 
   /**
    * Guarda una sesión de admin
@@ -168,7 +237,6 @@ class StorageService {
       const now = new Date();
       const expiresAt = new Date(data.expiresAt);
 
-      // Verificar si expiró
       if (now > expiresAt) {
         this.clearAdminSession();
         return null;
@@ -284,30 +352,30 @@ class StorageService {
   }
 
   /**
-   * Exporta todos los datos
-   * @returns {Object} Datos completos
+   * Exporta todos los datos (rifa desde Firestore + preferencias locales)
+   * @returns {Promise<Object>} Datos completos
    */
-  static exportAllData() {
+  static async exportAllData() {
     return {
-      rifaData: this.getRifaData(),
+      rifaData: await this.getRifaData(),
       userPreferences: this.getUserPreferences(),
       exportDate: new Date().toISOString(),
     };
   }
 
   /**
-   * Importa datos desde JSON
+   * Importa datos desde JSON hacia Firestore
    * @param {Object} importedData - Datos a importar
-   * @returns {boolean} Éxito
+   * @returns {Promise<boolean>} Éxito
    */
-  static importData(importedData) {
+  static async importData(importedData) {
     try {
       if (importedData.rifaData) {
         if (!this.isValidRifaData(importedData.rifaData)) {
           console.error('Datos de rifa inválidos');
           return false;
         }
-        this.setRifaData(importedData.rifaData);
+        await this.setRifaData(importedData.rifaData);
       }
 
       if (importedData.userPreferences) {
@@ -337,41 +405,28 @@ class StorageService {
   }
 
   /**
-   * Limpia todos los datos (cuidado con esto)
+   * Limpia los datos locales del dispositivo (sesión admin, borradores).
+   * NO borra los datos de la rifa en Firestore (eso se hace desde la
+   * consola de Firebase, para evitar borrados accidentales).
    * @returns {boolean} Éxito
    */
-  static clearAllData() {
+  static clearLocalData() {
     try {
-      localStorage.removeItem(STORAGE_KEYS.RIFA_DATA);
       localStorage.removeItem(STORAGE_KEYS.ADMIN_SESSION);
       localStorage.removeItem(STORAGE_KEYS.PURCHASE_DRAFT);
       return true;
     } catch (error) {
-      console.error('Error al limpiar datos:', error);
+      console.error('Error al limpiar datos locales:', error);
       return false;
     }
   }
 
   /**
-   * Obtiene tamaño usado en localStorage
-   * @returns {number} Bytes usados
+   * Crea un backup descargable de los datos de la rifa
+   * @returns {Promise<string>} URL del backup descargable
    */
-  static getStorageSize() {
-    let size = 0;
-    for (const key in localStorage) {
-      if (localStorage.hasOwnProperty(key)) {
-        size += localStorage[key].length + key.length;
-      }
-    }
-    return size;
-  }
-
-  /**
-   * Crea un backup automático
-   * @returns {string} URL del backup descargable
-   */
-  static createBackup() {
-    const backup = this.exportAllData();
+  static async createBackup() {
+    const backup = await this.exportAllData();
     const blob = new Blob([JSON.stringify(backup, null, 2)], {
       type: 'application/json',
     });
@@ -387,10 +442,10 @@ class StorageService {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         try {
           const data = JSON.parse(event.target.result);
-          const success = this.importData(data);
+          const success = await this.importData(data);
           resolve(success);
         } catch (error) {
           reject(error);
@@ -403,20 +458,6 @@ class StorageService {
 
       reader.readAsText(backupFile);
     });
-  }
-
-  /**
-   * Sincroniza datos con servidor (preparado para futuro)
-   * @param {Object} data - Datos a sincronizar
-   * @returns {Promise<boolean>} Éxito
-   */
-  static async syncWithServer(data) {
-    // TODO: Implementar cuando haya servidor backend
-    console.warn(
-      'Sincronización con servidor no implementada aún',
-      data
-    );
-    return Promise.resolve(true);
   }
 }
 

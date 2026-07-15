@@ -43,7 +43,7 @@ export default function HeroIllustration() {
           GRAN RIFA
         </text>
         <text x="20" y="55" fontSize="11" fill="#64748b">
-          Universitaria
+          Solidaria
         </text>
         <text x="20" y="95" fontSize="30" fontWeight="800" fill="#d4af37">
           #42

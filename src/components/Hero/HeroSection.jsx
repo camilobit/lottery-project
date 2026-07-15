@@ -12,12 +12,12 @@ export default function HeroSection({ onBuyClick, onViewNumbersClick }) {
         {/* Texto */}
         <div className="text-center lg:text-left">
           <span className="inline-block bg-secondary/10 text-secondary font-semibold text-xs tracking-wide uppercase px-3 py-1 rounded-full mb-4">
-            🎟️ Gran Rifa Universitaria
+            🎟️ Gran Rifa Solidaria
           </span>
           <h2 className="text-4xl sm:text-5xl font-bold text-primary-900 mb-4 leading-tight">
-            Gran rifa pro
+            Ayúdame a Culminar
             <br />
-            fondos Universitarios
+            mis Estudios Universitarios
           </h2>
           <p className="text-lg text-gray-600 mb-2">
             Premio principal:{' '}

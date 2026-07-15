@@ -28,51 +28,74 @@ export const useRifa = () => {
   const [error, setError] = useState(null);
 
   /**
-   * Carga datos iniciales desde almacenamiento
+   * Carga datos iniciales desde Firestore y se suscribe a cambios en
+   * tiempo real: si otro dispositivo (comprador o admin) modifica algo,
+   * este hook lo refleja automáticamente sin necesidad de recargar.
    */
   useEffect(() => {
-    const loadData = () => {
+    let unsubscribe;
+    let isMounted = true;
+
+    const loadData = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const data = StorageService.initializeRifaData();
+        const data = await StorageService.initializeRifaData();
 
         if (!data) {
           throw new Error('No se pudieron cargar datos de rifa');
         }
 
+        if (!isMounted) return;
+
         setNumbers(data.numbers || []);
-        const calculatedStats = RifaService.calculateStats(data.numbers);
-        setStats(calculatedStats);
+        setStats(RifaService.calculateStats(data.numbers || []));
+
+        // Suscripción en tiempo real: refleja cambios hechos desde
+        // cualquier otro dispositivo (compra de un cliente, aprobación
+        // del admin, etc) sin recargar la página.
+        unsubscribe = StorageService.subscribeToRifaData((liveData) => {
+          if (!isMounted) return;
+          setNumbers(liveData.numbers || []);
+          setStats(RifaService.calculateStats(liveData.numbers || []));
+        });
       } catch (err) {
-        setError(err.message || 'Error al cargar datos');
+        setError(
+          err.message ||
+            'Error al cargar datos. Verifica tu conexión a internet.'
+        );
         console.error('Error en useRifa:', err);
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
 
     loadData();
+
+    return () => {
+      isMounted = false;
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   /**
-   * Actualiza estado y estadísticas.
-   * Si el guardado en localStorage falla (por ejemplo, por cuota excedida
-   * al acumular varios comprobantes pesados), se informa mediante `error`
-   * en lugar de fallar en silencio.
+   * Actualiza estado local (optimista, respuesta instantánea en UI) y
+   * persiste en Firestore. Si el guardado falla (por ejemplo, sin
+   * conexión a internet), se informa mediante `error` en lugar de
+   * fallar en silencio.
    */
   const updateNumbers = useCallback((newNumbers) => {
     setNumbers(newNumbers);
-    const newStats = RifaService.calculateStats(newNumbers);
-    setStats(newStats);
+    setStats(RifaService.calculateStats(newNumbers));
 
-    const saved = StorageService.setNumbers(newNumbers);
-    if (!saved) {
-      setError(
-        'No se pudo guardar el cambio en este navegador. El comprobante puede ser demasiado pesado para el almacenamiento disponible; intenta con una imagen más liviana.'
-      );
-    }
+    StorageService.setNumbers(newNumbers).then((saved) => {
+      if (!saved) {
+        setError(
+          'No se pudo guardar el cambio. Verifica tu conexión a internet e intenta nuevamente.'
+        );
+      }
+    });
   }, []);
 
   /**
