@@ -1,0 +1,11 @@
+Coloca aquí tu código QR de Nequi con el nombre exacto:
+
+    nequi-qr.png
+
+Ruta completa: public/assets/payment/nequi-qr.png
+
+Mientras no exista este archivo, la app mostrará automáticamente un
+mensaje de "Aquí aparecerá el código QR" en la pantalla de pago.
+
+En cuanto agregues el archivo con ese nombre exacto, se mostrará
+automáticamente sin necesidad de tocar código.

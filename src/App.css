@@ -1,43 +1,164 @@
-#root {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  background-color: #16191D;
+/* Estilos específicos de la aplicación */
+
+.app-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-hero {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.app-section {
+  transition: all 0.3s ease;
+}
+
+.app-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.app-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Estilos de números */
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 0.5rem;
+}
+
+.number-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #e5e7eb;
+}
+
+.number-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.number-available {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
+}
+
+.number-available:hover {
+  background: #a7f3d0;
+}
+
+.number-reserved {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fcd34d;
+}
+
+.number-pending {
+  background: #fed7aa;
+  color: #9a3412;
+  border-color: #fb923c;
+}
+
+.number-sold {
+  background: #fecaca;
+  color: #7f1d1d;
+  border-color: #fca5a5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Estilos de botones */
+.btn-gradient {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3f8a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(30, 58, 138, 0.2);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+/* Estilos de modal */
+.modal-overlay {
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  animation: slideIn 0.3s ease;
+}
+
+/* Estilos de formulario */
+.form-input {
+  transition: all 0.3s ease;
+  border: 2px solid #e5e7eb;
+}
+
+.form-input:focus {
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.form-input.error {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.form-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Estilos de barra de progreso */
+.progress-bar {
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #10b981, #059669);
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .number-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
   }
+
+  .app-card {
+    margin: 0 -1rem;
+    border-radius: 0;
+  }
+}
+
+/* Animaciones */
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.spinner {
+  animation: spin 1s linear infinite;
 }

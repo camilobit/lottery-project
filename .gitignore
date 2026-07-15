@@ -1,1 +1,49 @@
-node_modules
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Producción
+build/
+dist/
+.next/
+out/
+
+# Misc
+.DS_Store
+*.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Entorno
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# IDE
+.sublime-project
+.sublime-workspace
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local
+localhost
+.env.development
+
+# Archivos temporales
+*.tmp
+.cache/
