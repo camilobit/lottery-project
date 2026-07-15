@@ -22,7 +22,7 @@ export const RIFA_DETAILS = {
   DRAW_DATE: '19 de Agosto de 2025',
   DRAW_TIME: '14:00 (2:00 PM)',
   LOTTERY_NAME: 'Lotería del Meta',
-  TICKET_PRICE: 10000, // Precio por número
+  TICKET_PRICE: 20000, // Precio por número
   CURRENCY: 'COP',
   CURRENCY_SYMBOL: '$',
 };
@@ -31,7 +31,7 @@ export const RIFA_DETAILS = {
 export const CONTACT_INFO = {
   PHONE: '3185776314',
   WHATSAPP: 'https://wa.me/573185776314',
-  EMAIL: 'ejemplo@email.com',
+  EMAIL: 'camiloacevedovargas@email.com',
   CITY: 'Villavicencio, Meta',
 };
 
