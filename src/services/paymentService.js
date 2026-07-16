@@ -66,7 +66,7 @@ class NequiPayment extends PaymentProvider {
         'Abre tu app de Nequi',
         `Envía $${amount.toLocaleString('es-CO')} al número ${PAYMENT_CONFIG.NEQUI.PHONE}`,
         'Toma una captura o guarda el comprobante',
-        'Súbelo en el siguiente paso para completar tu compra',
+        'Envíalo para confirmar tu aporte. GRACIAS',
       ],
     };
   }

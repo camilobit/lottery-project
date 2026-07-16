@@ -4,17 +4,17 @@ import { usePurchaseForm } from '../../hooks/usePurchaseForm';
 import { RIFA_DETAILS, PURCHASE_STEPS } from '../../config/app.config';
 import { getActivePaymentProvider } from '../../services/paymentService';
 
-const STEP_ORDER = [
-  PURCHASE_STEPS.FORM.key,
-  PURCHASE_STEPS.PAYMENT.key,
-  PURCHASE_STEPS.CONFIRMATION.key,
-];
+// Flujo activo: solo 2 pasos (Formulario → Pago). El admin valida cada
+// transferencia manualmente, así que ya no se le pide comprobante al
+// comprador. El paso de Confirmación/Comprobante queda comentado más abajo
+// por si se quiere reactivar en el futuro (por ejemplo, al integrar un
+// proveedor de pago automático que sí necesite ese paso).
+const STEP_ORDER = [PURCHASE_STEPS.FORM.key, PURCHASE_STEPS.PAYMENT.key];
 
 /**
- * Modal con el flujo completo de compra de un número:
+ * Modal con el flujo de compra de un número:
  * 1. Datos del comprador
- * 2. Pantalla de pago (Nequi)
- * 3. Confirmación + subida de comprobante
+ * 2. Pantalla de pago (Nequi) + confirmación directa
  */
 export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase }) {
   const [stepIndex, setStepIndex] = useState(0);
@@ -26,12 +26,16 @@ export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase
     errors,
     touched,
     isSubmitting,
+    // Se conservan estos campos del hook (aunque no se usan en el flujo
+    // activo de 2 pasos) para poder reactivar el paso de comprobante sin
+    // tener que volver a conectar el hook.
     proofPreview,
     handleChange,
     handleBlur,
     handleProofFileChange,
     removeProofFile,
     validateForm,
+    getFormData,
     getConfirmationData,
   } = usePurchaseForm();
 
@@ -50,10 +54,14 @@ export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase
     setStepIndex((i) => Math.max(i - 1, 0));
   };
 
+  /**
+   * Confirma la compra directamente desde el paso de pago, sin pedir
+   * comprobante (el admin valida cada transferencia manualmente).
+   */
   const handleFinalSubmit = async () => {
     setSubmitError(null);
     try {
-      const data = await getConfirmationData();
+      const data = await getFormData();
       const success = onSubmitPurchase(selectedNumber, data);
       if (success) {
         setIsDone(true);
@@ -61,7 +69,7 @@ export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase
         setSubmitError('No se pudo registrar la compra. Intenta nuevamente.');
       }
     } catch (err) {
-      setSubmitError(err.message || 'Error al procesar tu comprobante.');
+      setSubmitError(err.message || 'Error al procesar tu solicitud.');
     }
   };
 
@@ -158,9 +166,13 @@ export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase
         </div>
       )}
 
-      {/* PASO 2: Pantalla de pago */}
+      {/* PASO 2: Pantalla de pago + confirmación directa */}
       {currentStep === PURCHASE_STEPS.PAYMENT.key && (
         <div className="space-y-4">
+          {submitError && (
+            <Alert variant="error" message={submitError} closeable={false} />
+          )}
+
           <div className="bg-blue-50 rounded-lg p-4 flex justify-between items-center">
             <div>
               <p className="text-sm text-gray-600">Número reservado</p>
@@ -218,17 +230,38 @@ export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase
           />
 
           <div className="flex gap-3 pt-2">
-            <Button variant="ghost" onClick={goBack}>
+            <Button variant="ghost" onClick={goBack} disabled={isSubmitting}>
               ← Atrás
             </Button>
-            <Button variant="success" fullWidth onClick={goNext}>
-              Ya pagué, continuar →
+            <Button
+              variant="primary"
+              fullWidth
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              onClick={handleFinalSubmit}
+            >
+              Confirmar Compra
             </Button>
           </div>
         </div>
       )}
 
-      {/* PASO 3: Confirmación */}
+      {/*
+        ============================================================
+        PASO 3 (DESACTIVADO): Confirmación con subida de comprobante.
+        Se deja comentado para reactivarlo fácilmente en el futuro, por
+        ejemplo si se integra un proveedor de pago automático (Wompi,
+        Mercado Pago, etc) que necesite validar el comprobante en línea.
+
+        Para reactivarlo:
+        1. Agregar PURCHASE_STEPS.CONFIRMATION.key de vuelta a STEP_ORDER
+        2. Descomentar este bloque
+        3. En handleFinalSubmit, usar getConfirmationData() en vez de
+           getFormData(), y mover el botón "Confirmar Compra" aquí
+           (dejando en el paso de pago un botón "Ya pagué, continuar →"
+           que solo llame a goNext())
+        ============================================================
+
       {currentStep === PURCHASE_STEPS.CONFIRMATION.key && (
         <div className="space-y-4">
           {submitError && (
@@ -280,6 +313,7 @@ export default function PurchaseFlow({ selectedNumber, onClose, onSubmitPurchase
           </div>
         </div>
       )}
+      */}
     </Modal>
   );
 }
