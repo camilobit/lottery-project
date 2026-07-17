@@ -19,7 +19,7 @@ export const RIFA_DETAILS = {
   DESCRIPTION: 'Ayúdame a culminar mis estudios universitarios',
   PRIZE_AMOUNT: 500000, // Valor en COP
   PRIZE_DESCRIPTION: '$500.000 COP en efectivo',
-  DRAW_DATE: '19 de Agosto de 2025',
+  DRAW_DATE: '19 de Agosto de 2026',
   DRAW_TIME: '14:00 (2:00 PM)',
   LOTTERY_NAME: 'Lotería del Meta',
   TICKET_PRICE: 20000, // Precio por número
